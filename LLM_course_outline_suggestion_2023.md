@@ -1,3 +1,5 @@
+> **Notice** This is an outline I wrote about a year ago, when LLM is still in its heyday of development. As such some of the info below may have become outdated.
+
 # Crash course on Transformer
 
 ## NLP, Inductive bias, RNN
