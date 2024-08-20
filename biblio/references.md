@@ -1,34 +1,27 @@
 # Ch 1 Attention and Transformer
 
-https://www.3blue1brown.com/topics/neural-networks
+BPE Tokenization Demystified: Implementation and Examples, by MartinLwx. https://martinlwx.github.io/en/the-bpe-tokenizer/
 
+What Are Word and Sentence Embeddings? Cohere LLM University, Chapter 1, Module 1. By Luis Serrano. https://cohere.com/llmu/sentence-word-embeddings
 
-https://martinlwx.github.io/en/the-bpe-tokenizer/
+A Deep Dive into NLP Tokenization and Encoding with Word and Sentence Embeddings, by Josh Pause. https://datajenius.com/2022/03/13/a-deep-dive-into-nlp-tokenization-encoding-word-embeddings-sentence-embeddings-word2vec-bert/
 
-https://cohere.com/llmu/sentence-word-embeddings
+Word Embedding Analogies: Understanding King - Man + Woman = Queen, by Kawin Ethayarajh. https://kawine.github.io/blog/nlp/2019/06/21/word-analogies.html
 
-https://datajenius.com/2022/03/13/a-deep-dive-into-nlp-tokenization-encoding-word-embeddings-sentence-embeddings-word2vec-bert/
+Linda Linsefors's Shortform, lesswrong forum. https://www.lesswrong.com/posts/tM84DyBg4Jbq5zGmH/linda-linsefors-s-shortform?commentId=owWTRrnGDfEqyGzjb
+(See also https://blog.esciencecenter.nl/king-man-woman-king-9a7fd2935a85 , referenced from above)
 
-https://kawine.github.io/blog/nlp/2019/06/21/word-analogies.html
+Rotary Embeddings: A Relative Revolution, Biderman, Stella and Black, Sid and Foster, etc; Eleuther blog. https://blog.eleuther.ai/rotary-embeddings/
 
-https://www.lesswrong.com/posts/tM84DyBg4Jbq5zGmH/linda-linsefors-s-shortform?commentId=owWTRrnGDfEqyGzjb
-https://blog.esciencecenter.nl/king-man-woman-king-9a7fd2935a85
+Chapter 1.3 Rotary Positional Embeddings, The Large Language Model Playbook, Cyril Zakka. https://cyrilzakka.github.io/llm-playbook/nested/rot-pos-embed.html
 
+Annotated Research Paper Implementations, Rotary Positional Embeddings (RoPE), by labml. https://nn.labml.ai/transformers/rope/index.html
 
-https://blog.eleuther.ai/rotary-embeddings/
+Tutorial/implementation of GPT, by labml. https://nn.labml.ai/transformers/gpt/index.html
 
-https://cyrilzakka.github.io/llm-playbook/nested/rot-pos-embed.html
+The Illustrated Transformer, by Jay Alammar. https://jalammar.github.io/illustrated-transformer/
 
-https://nn.labml.ai/transformers/rope/index.html
-https://nn.labml.ai/transformers/gpt/index.html
-
-
-
-https://jalammar.github.io/illustrated-transformer/
-http://jalammar.github.io/illustrated-gpt2/
-
-
-
+The Illustrated GPT-2 (Visualizing Transformer Language Models), by Jay Alammar. http://jalammar.github.io/illustrated-gpt2/
 
 
 # Ch 2 Training LLM and Text Generation
