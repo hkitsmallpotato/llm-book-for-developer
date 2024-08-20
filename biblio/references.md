@@ -120,9 +120,38 @@ Formalizing Prompts, by Sander Schulhoff. https://learnprompting.org/docs/basics
 
 
 
-# Ch 4 Running Open source LLM
+# Ch 4 Running Open source/Open weight LLM
+
+Especially for people who prefers hands on, running an open source/open weight LLM on their own computer is a nice way to get started with developing with LLM. But this haven't been always possible, and its development has short but significant history. The links below should provide some hints. To sum up:
+
+- There are efforts trying to reproduce LLM pre-ChatGPT era (eg GPT-J)
+- Modern open source/open weight LLM is reliant on release by large, well resourced institution/organization (kickstarted by llama1 from meta)
+- Model extraction, distillation (Alpaca paper and more), synthetic datasets (Textbook is all you need/phi model by Microsoft), are techniques that can makes training strong LLM easier. There is some sort of boostrap effect here.
+- Software ecosystem matters - llama.cpp have played a pivotal role in lowering the barrier of entry of doing LLM inferencing on consumer grade and even edge device. It started its life as a hack with tricks such as mmap added later, but has since matured into a core library in the ecosystem. Before llama.cpp, LLM are mostly run directly using a research/prototype oriented framework such as Huggingface Transformers, that assume a well resourced user with powerful computer. llama.cpp manually reimplement the inferencing (and later on, also some part of training) making it possible to apply various optimization to achieve the advantages listed above.
+- Later on, as competition heats up, open source/open weight LLM become mainstream and eventually becomes a viable alternative to closed source API.
+
+In the next section, some guides and resources for running LLM on your own device is given. Overall, knowing lots of terminology can be confusing at first so some of the guides below provide a glossary and explainer. In general, it comes down to: choose and download model weights, choose the inferencing backend (and optionally frontend) and install it, then run. For beginners, I recommend llama.cpp as it is the most flexible in terms of hardware requirements (can run on both GPU, partially on GPU, or purely on CPU), and have good quantization format that significantly lower the requirements with relatively transparent trade-off (eg Huggingface transformer also technically have quantization via bitsandbytes, but it is not as advanced as the quantization methods offered by llama.cpp).
 
 
+## Some historical context
+
+The History of Open-Source LLMs: Imitation and Alignment (Part Three), by Cameron R. Wolfe. https://cameronrwolfe.substack.com/p/the-history-of-open-source-llms-imitation
+
+Large language models are having their Stable Diffusion moment, by Simon Willison. https://simonwillison.net/2023/Mar/11/llama/
+
+Google "We Have No Moat, And Neither Does OpenAI", leaked memo republished on SemiAnalysis. https://www.semianalysis.com/p/google-we-have-no-moat-and-neither
+
+Optimizing $Model.cpp, by Matt Rickard. https://blog.matt-rickard.com/p/optimizing-modelcpp
+
+Edge AI Just Got Faster, by Justine Tunney. https://justine.lol/mmap/
+
+Hacknews discussion on GGML. https://news.ycombinator.com/item?id=36215651
+
+Intro to GGML, by Carson Tang. https://carsontang.github.io/machine-learning/2023/06/06/ggml-101/
+
+https://lmsys.org/blog/2023-03-30-vicuna/
+
+https://crfm.stanford.edu/2023/03/13/alpaca.html
 
 ## Guide to run open source LLM
 
