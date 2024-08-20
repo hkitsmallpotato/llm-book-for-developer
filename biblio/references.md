@@ -189,6 +189,8 @@ Mapping the landscape of gen-AI product user experience, by Matt Webb. https://i
 
 ## Structured output/Guided/Constrained Generation
 
+**General theory and practise**
+
 https://hackernoon.com/efficient-guided-generation-for-large-language-models-llm-sampling-and-guided-generation
 https://arxiv.org/abs/2307.09702
 
@@ -199,11 +201,18 @@ https://github.com/sgl-project/sglang
 https://uptodata.substack.com/p/guided-generation-for-llm-outputs
 
 
+**Optimization**
+
 https://lmsys.org/blog/2024-02-05-compressed-fsm/
 
 https://blog.dottxt.co/how-fast-cfg.html
 
 https://lmsys.org/blog/2024-01-17-sglang/
+
+
+(Apply parallelism in the state machine to make it faster) https://github.com/otriscon/llm-structured-output
+
+(Also parallelism, but at the natural language level (!)) https://github.com/varunshenoy/super-json-mode
 
 
 ## OpenAI API Standard - Function Calling and Code Interpreter
