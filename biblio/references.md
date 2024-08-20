@@ -132,6 +132,7 @@ Especially for people who prefers hands on, running an open source/open weight L
 
 In the next section, some guides and resources for running LLM on your own device is given. Overall, knowing lots of terminology can be confusing at first so some of the guides below provide a glossary and explainer. In general, it comes down to: choose and download model weights, choose the inferencing backend (and optionally frontend) and install it, then run. For beginners, I recommend llama.cpp as it is the most flexible in terms of hardware requirements (can run on both GPU, partially on GPU, or purely on CPU), and have good quantization format that significantly lower the requirements with relatively transparent trade-off (eg Huggingface transformer also technically have quantization via bitsandbytes, but it is not as advanced as the quantization methods offered by llama.cpp).
 
+Finally, since our goal is to developer LLM based GenAI app, the OpenAI API, which have been a de facto standard, is important to abstract away different backend and provide a uniform interface for the application developer (as well as framework). As a result many backend also supports operating in server mode, which will provide HTTP endpoint, usually (but not always) conforming to the OpenAI API standard (called "Open AI API compatible").
 
 ## Some historical context
 
@@ -170,6 +171,15 @@ On the Origin of LLMs: An Evolutionary Tree and Graph for 15,821 Large Language 
 
 # Ch 5 Intro to LLM based GenAI app
 
+LLM based GenAI app is an emerging tech that is in its early day. We begin by reviewing some recent proposed architecture and classification scheme of these new class of app. Overall, while general principles of UI/UX design and software engineering still applies, these apps have their own consideration and characeristics too based on the current capability, limitations, and "quirks" of current generation LLM.
+
+A first hurdle that we immediately encounter is that to enable tool use (see prompt engineering chapter), we need LLM to reliably produce structured output that strictly adhere to some formal format. (Sidenote: one insightful comment said that this can be considered a glue between the language layer and logic/control layer of the app) This is a significant issue, and numerous attempts have been made to solve this. It is only in very recent time that OpenAI finally supports structured output in their official API, and before that it comes down to a mismash of prompt engineering, asking it to retry/correct/repair, interleaved prompting, abusing OpenAI API's function calling feature, and early attempt at an algorithmic solution to gaurantee technical adherence to the format. The situation is messy and complex, and comes down to some factors: 1. Although algorithmic solutions to it are already known fairly early on, they requires tight integration with the LLM, which OpenAI's API didn't have back then (it does have logit bias, but is sufficiently limited that it won't work for this purpose). On the other hand, locally run LLM can support this, so this created a sort of divergence when the trend is to want to treat OpenAI's API as similar to the servlet/WSGI standard sitting right in the middle layer of the tech stack. Moreover, as there is also non-algorithmic approach that can work, this further created fragmentation in the ecosystem of libraries that aim to support this. 2. The incidental complexity of point 1 created a side effect that the more technical problem of further refining the core algorithm to be more efficient, and to handle real world complexity, such as specifically supporting JSONSchema efficiently alongside context free grammar (which is considered general enough to serve as the common base case), are harder to attend to. 3. Other technical difficulties that are simply epheramal and only due to an immature ecosystem overall. Nevertheless they might have been enough to slow adoption, which creates a negative feedback effect.
+
+Overall however, I think we can be cautiously optimistic. As OpenAI API's finally added support for structured output, and as these early experience accumulate, this part of the ecosystem may see a refactor and consolidation phase, after which libraries will become more mature and comprehensive.
+
+At any rate, now is a good time to learn more about the core algorithm and some of its optimization and engineering to make it production ready.
+
+After that, we look at function calling and code interpreter, two value added feature that OpenAI's API provide. Given what you've learnt so far, it should be apparent that given access to an open weight model and appropiate libraries, it is possible to build that yourself. (Note: contingent on the model being either sufficiently intelligent, or having had these features explicitly trained into the model as its native capability) Nevertheless, they should be considered to be nearer the infrastructure layer - application developer should use them as a higher level abstraction.
 
 ## Architecture and UI/UX/Product
 
@@ -212,6 +222,7 @@ https://dev.to/tereza_tizkova/llama-3-with-function-calling-and-code-interpreter
 
 # Ch 6 Retrieval Augmented Generation (RAG)
 
+> TODO: RAG articles are a dime a dozen given how it's seen as being the best match with enterprise use case. Because of this it is a challenge to filter and select articles from such a vast pool.
 
 https://alexgarcia.xyz/blog/2024/sqlite-vec-stable-release/index.html
 
@@ -219,10 +230,15 @@ https://alexgarcia.xyz/blog/2024/sqlite-vec-stable-release/index.html
 
 # Ch 7 LLM based Agents
 
+LLM based Agents are very early, cutting edge, speculative technology. Nevertheless, if they work, it'd unlock lots of potentials. As well, from a purely technical perspective, for much of the LLM application pattern and prompt techniques, when pushed to its limit, they can all be interpreted as some form of limited agents. (From an application point of view, agent might be considered the analog of "dynamic" style programming language)
 
-https://pub.towardsai.net/autonomous-gpt-4-from-chatgpt-to-autogpt-agentgpt-babyagi-hugginggpt-and-beyond-9871ceabd69e
-https://sea.mashable.com/tech/23298/auto-gpt-babyagi-and-agentgpt-how-to-use-ai-agents
+The first section below provide references that elucidates the theory side of agents. Understanding cognitive architecture and how to design a set of prompts for agent can be a useful skill for building other LLM apps in general.
 
+After that, we examine some of the ambituous LLM agent projects in the earliest days. Although they may not work very well now, they should be seen more as a vision of what might be possible in the near future. For actually deploying agents in your LLM based GenAI applications, consider libraries and frameworks that are specifically designed for developers, such as langroid, langgraph, crewAI, etc.
+
+Finally, multi-agent is an extension of single agent. Multi-agent allow us to decompose complex problems, which reduces the intelligence requirement placed on the underlying LLM. Another crucial point is that multi-agent also produces new phenomenon independently of the consideration of capability - having multiple agent introduces communication, coordination, and sociology. This open ups the interesting new domain of social simulation.
+
+## Autonomous agents and Cognitive Architecture
 
 https://lilianweng.github.io/posts/2023-06-23-agent/
 https://medium.com/the-modern-scientist/a-complete-guide-to-llms-based-autonomous-agents-part-i-69515c016792
@@ -236,6 +252,13 @@ https://blog.langchain.dev/what-is-a-cognitive-architecture/
 
 https://github.com/ysymyth/awesome-language-agents
 
+## Agent framework in real world
+
+https://pub.towardsai.net/autonomous-gpt-4-from-chatgpt-to-autogpt-agentgpt-babyagi-hugginggpt-and-beyond-9871ceabd69e
+https://sea.mashable.com/tech/23298/auto-gpt-babyagi-and-agentgpt-how-to-use-ai-agents
+
+
+## Multi-agent system
 
 https://sajalsharma.com/posts/overview-multi-agent-fameworks/
 https://wandb.ai/vincenttu/blog_posts/reports/Exploring-2-Multi-Agent-LLM-Libraries-Camel-Langroid--Vmlldzo1MzAyODM5
