@@ -79,24 +79,33 @@ Reference pending: Massively multitask perspective
 
 # Ch 3 Emergence, In Context Learning, and Prompt Engineering
 
-https://thegradient.pub/in-context-learning-in-context/
+Prompt engineering arguably have its ancestral root before the ChatGPT revolution, when NLP researchers probing earlier forms of Transformer based model discovered emergent phenomenon coming out of those models. As model scale increases, they may suddenly acquire new capability for new tasks. Whether emergence is actually real or just a mirage is a topic of debate, though it does suggests that 1. Rather than focusing on just training and evaluation in traditional ML, the way we give instructions to it (i.e. prompting) may have effects on how the model performs, and that 2. there are things we don't fully understand about these models that warrant further investigation.
 
-https://ai.stanford.edu/blog/understanding-incontext/
+One of the most significant candidate for emergent ability, that is arguably foundational to prompt engineering, is what is known as "In Context Learning" (ICL). The first reference on ICL below gives a detailed and academic review, and examined two proposed theoretical explanations - Bayesian conditioning, and mesa-optimization. While the two may seem opposed on first glance, it can be seem in some way that both are pieces to the puzzle of ICL.
 
-https://www.lakera.ai/blog/what-is-in-context-learning
-
-https://www.assemblyai.com/blog/emergent-abilities-of-large-language-models/
-
-https://www.jasonwei.net/blog/emergence
-
-https://cset.georgetown.edu/article/emergent-abilities-in-large-language-models-an-explainer/
+Then, we provide two resources for prompt engineering - Prompt Engineering Guide by DAIR.AI is more academic and have a good list of the common special prompting technique, such as Chain of thought and ReACT, that will be a neccesary ingredient for building LLM based app in future. On the other hand, the free source by "Learn Prompting" is more oriented towards layperson, but the section on "Formalizing Prompt" is a good summary of the basic prompting technique that should be applied regardless.
 
 
-https://www.promptingguide.ai/
+Emergent Abilities of Large Language Models, by Ryan O'Connor. https://www.assemblyai.com/blog/emergent-abilities-of-large-language-models/
 
-https://learnprompting.org/docs/basics/prompt_engineering
+137 emergent abilities of large language models, By Jason Wei. https://www.jasonwei.net/blog/emergence
 
-https://learnprompting.org/docs/basics/formalizing
+Emergent Abilities in Large Language Models: An Explainer, by Thomas Woodside. https://cset.georgetown.edu/article/emergent-abilities-in-large-language-models-an-explainer/
+
+
+In-Context Learning, In Context. By Daniel Bashir. https://thegradient.pub/in-context-learning-in-context/
+
+How does in-context learning work? A framework for understanding the differences from traditional supervised learning, by Sang Michael Xie and Sewon Min. https://ai.stanford.edu/blog/understanding-incontext/
+
+What is In-context Learning, and how does it work: The Beginner’s Guide, by Deval Shah. https://www.lakera.ai/blog/what-is-in-context-learning
+
+
+
+Prompt Engineering Guide, produced by DAIR.AI (Democratizing Artificial Intelligence Research, Education, and Technologies). https://www.promptingguide.ai/
+
+Introductory Course on Generative AI and Prompt Engineering, written by Sander Schulhoff, organized by "Learn Prompting". https://learnprompting.org/docs/introduction
+
+Formalizing Prompts, by Sander Schulhoff. https://learnprompting.org/docs/basics/formalizing
 
 
 
