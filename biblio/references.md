@@ -4,6 +4,7 @@ Modern NLP, LLM, and the ChatGPT revolution is possible all thanks to the attent
 
 At the same time, while applying attention to construct the Transformer based, LLM neural network architecture, we must also have supportive elements around it - this includes the Tokenizers, token and positional embeddings. The references below explore these concepts in more depth.
 
+## Tokenizer, embeddings and positional embeddings
 
 BPE Tokenization Demystified: Implementation and Examples, by MartinLwx. https://martinlwx.github.io/en/the-bpe-tokenizer/
 
@@ -21,6 +22,8 @@ Rotary Embeddings: A Relative Revolution, Biderman, Stella and Black, Sid and Fo
 Chapter 1.3 Rotary Positional Embeddings, The Large Language Model Playbook, Cyril Zakka. https://cyrilzakka.github.io/llm-playbook/nested/rot-pos-embed.html
 
 Annotated Research Paper Implementations, Rotary Positional Embeddings (RoPE), by labml. https://nn.labml.ai/transformers/rope/index.html
+
+## Attention and Transformer
 
 Tutorial/implementation of GPT, by labml. https://nn.labml.ai/transformers/gpt/index.html
 
@@ -45,11 +48,17 @@ On the camp that suggests LLM may have acquired some degree of intelligence, som
 - Reasoning and knowledge engine
 - A cognitive computer - while classical computer operates on bits as data and uses classical, boolean logic; LLM can be conceptualized as a new form of computer that takes on natural language text as both data and "natural language program".
 
+## Foundation Models
+
 Reference pending: Chinhilla scaling law paper
 
 Reference pending: The foundation model paradigm, the pre-training/fine-tuning/preference optimization phase.
 
+## LLM Sampling Algorithms
+
 How to generate text: using different decoding methods for language generation with Transformers, by Patrick von Platen. https://huggingface.co/blog/how-to-generate
+
+## Perspectives on LLM
 
 ChatGPT is a blurry JPEG of the web, by Ted Chiang. https://www.newyorker.com/tech/annals-of-technology/chatgpt-is-a-blurry-jpeg-of-the-web
 
@@ -85,6 +94,7 @@ One of the most significant candidate for emergent ability, that is arguably fou
 
 Then, we provide two resources for prompt engineering - Prompt Engineering Guide by DAIR.AI is more academic and have a good list of the common special prompting technique, such as Chain of thought and ReACT, that will be a neccesary ingredient for building LLM based app in future. On the other hand, the free source by "Learn Prompting" is more oriented towards layperson, but the section on "Formalizing Prompt" is a good summary of the basic prompting technique that should be applied regardless.
 
+## Emergent abilities
 
 Emergent Abilities of Large Language Models, by Ryan O'Connor. https://www.assemblyai.com/blog/emergent-abilities-of-large-language-models/
 
@@ -92,6 +102,7 @@ Emergent Abilities of Large Language Models, by Ryan O'Connor. https://www.assem
 
 Emergent Abilities in Large Language Models: An Explainer, by Thomas Woodside. https://cset.georgetown.edu/article/emergent-abilities-in-large-language-models-an-explainer/
 
+## In Context Learning
 
 In-Context Learning, In Context. By Daniel Bashir. https://thegradient.pub/in-context-learning-in-context/
 
@@ -99,7 +110,7 @@ How does in-context learning work? A framework for understanding the differences
 
 What is In-context Learning, and how does it work: The Beginner’s Guide, by Deval Shah. https://www.lakera.ai/blog/what-is-in-context-learning
 
-
+## Prompt Engineering
 
 Prompt Engineering Guide, produced by DAIR.AI (Democratizing Artificial Intelligence Research, Education, and Technologies). https://www.promptingguide.ai/
 
@@ -128,7 +139,10 @@ Local LLM Glossary" & "Simple Llama + SillyTavern Setup Guide, by kindacognizant
 On the Origin of LLMs: An Evolutionary Tree and Graph for 15,821 Large Language Models, by Sarah Gao, Andrew Kean Gao. https://arxiv.org/abs/2307.09793
 
 
-## Intro to LLM based GenAI app
+# Ch 5 Intro to LLM based GenAI app
+
+
+## Architecture and UI/UX/Product
 
 Emerging Architectures for LLM Applications, by Matt Bornstein and Rajko Radovanovic. https://a16z.com/emerging-architectures-for-llm-applications/
 
@@ -146,7 +160,16 @@ https://github.com/sgl-project/sglang
 https://uptodata.substack.com/p/guided-generation-for-llm-outputs
 
 
+https://lmsys.org/blog/2024-02-05-compressed-fsm/
+
+https://blog.dottxt.co/how-fast-cfg.html
+
+https://lmsys.org/blog/2024-01-17-sglang/
+
+
 ## OpenAI API Standard - Function Calling and Code Interpreter
+
+https://vercel.com/guides/openai-function-calling
 
 https://thenewstack.io/a-comprehensive-guide-to-function-calling-in-llms/
 
@@ -158,75 +181,14 @@ https://e2b.dev/blog/how-to-add-code-interpreter-to-llama3
 https://dev.to/tereza_tizkova/llama-3-with-function-calling-and-code-interpreter-55nb
 
 
-----
-
-# Others
-
-https://nuvalence.io/insights/a-6-category-taxonomy-for-generative-ai-use-cases/
-
-https://towardsai.net/p/artificial-intelligence/generative-ai-terminology-an-evolving-taxonomy-to-get-you-started
-
-----
-
-# Second round
-
-
-
-https://vercel.com/guides/openai-function-calling
-
-
-https://sumanthrh.com/post/distributed-and-efficient-finetuning/
-
-https://kaitchup.substack.com/p/a-guide-on-hyperparameters-and-training
-
-https://cameronrwolfe.substack.com/p/easily-train-a-specialized-llm-peft
-
-https://docs.adapterhub.ml/methods.html
-
-
-https://graphcore-research.github.io/galore/
-https://medium.com/@tanalpha-aditya/galore-memory-efficient-llm-training-by-gradient-low-rank-projection-d93390e110fe
-
-
-https://insujang.github.io/2024-01-07/llm-inference-continuous-batching-and-pagedattention/
-
-
-https://insujang.github.io/2024-01-07/llm-inference-autoregressive-generation-and-attention-kv-cache/
-https://insujang.github.io/2024-01-11/tensor-parallelism-and-sequence-parallelism-detailed-analysis/
-https://insujang.github.io/2024-01-21/flash-attention/
-
-
-https://medium.com/@plienhar/llm-inference-series-3-kv-caching-unveiled-048152e461c8
-
-
-https://medium.com/ai-science/speculative-decoding-make-llm-inference-faster-c004501af120
-
-https://predibase.com/blog/lorax-the-open-source-framework-for-serving-100s-of-fine-tuned-llms-in
-https://predibase.com/blog/lora-exchange-lorax-serve-100s-of-fine-tuned-llms-for-the-cost-of-one
+# Ch 6 Retrieval Augmented Generation (RAG)
 
 
 https://alexgarcia.xyz/blog/2024/sqlite-vec-stable-release/index.html
 
 
 
-
-https://kai-greshake.de/posts/llm-malware/
-
-https://kai-greshake.de/posts/in-escalating-order-of-stupidity/
-
-
-https://medium.com/emalpha/safeguarding-llm-conversations-using-llama-guard-a1652da1d2de
-
-https://blog.langchain.dev/rebuff/
-https://www.guardrailsai.com/docs/concepts/guard
-
-
-
-https://lmsys.org/blog/2024-02-05-compressed-fsm/
-
-https://blog.dottxt.co/how-fast-cfg.html
-
-https://lmsys.org/blog/2024-01-17-sglang/
+# Ch 7 LLM based Agents
 
 
 https://pub.towardsai.net/autonomous-gpt-4-from-chatgpt-to-autogpt-agentgpt-babyagi-hugginggpt-and-beyond-9871ceabd69e
@@ -250,10 +212,25 @@ https://sajalsharma.com/posts/overview-multi-agent-fameworks/
 https://wandb.ai/vincenttu/blog_posts/reports/Exploring-2-Multi-Agent-LLM-Libraries-Camel-Langroid--Vmlldzo1MzAyODM5
 
 
-https://arxiv.org/abs/2402.01680
-https://arxiv.org/abs/2304.03442
 
-https://arxiv.org/abs/2305.16291
+# Ch 8 Production Inference Engine
+
+
+https://insujang.github.io/2024-01-07/llm-inference-continuous-batching-and-pagedattention/
+
+
+https://insujang.github.io/2024-01-07/llm-inference-autoregressive-generation-and-attention-kv-cache/
+https://insujang.github.io/2024-01-11/tensor-parallelism-and-sequence-parallelism-detailed-analysis/
+https://insujang.github.io/2024-01-21/flash-attention/
+
+
+https://medium.com/@plienhar/llm-inference-series-3-kv-caching-unveiled-048152e461c8
+
+
+https://medium.com/ai-science/speculative-decoding-make-llm-inference-faster-c004501af120
+
+https://predibase.com/blog/lorax-the-open-source-framework-for-serving-100s-of-fine-tuned-llms-in
+https://predibase.com/blog/lora-exchange-lorax-serve-100s-of-fine-tuned-llms-for-the-cost-of-one
 
 
 https://docs.ray.io/en/latest/serve/tutorials/vllm-example.html
@@ -261,4 +238,51 @@ http://kubeagi.k8s.com.cn/docs/Configuration/DistributedInference/deploy-using-r
 
 
 
+# Ch 9 LLM Security
 
+
+https://kai-greshake.de/posts/llm-malware/
+
+https://kai-greshake.de/posts/in-escalating-order-of-stupidity/
+
+
+https://medium.com/emalpha/safeguarding-llm-conversations-using-llama-guard-a1652da1d2de
+
+https://blog.langchain.dev/rebuff/
+https://www.guardrailsai.com/docs/concepts/guard
+
+
+# Ch 10 Fine-tuning LLM
+
+
+https://sumanthrh.com/post/distributed-and-efficient-finetuning/
+
+https://kaitchup.substack.com/p/a-guide-on-hyperparameters-and-training
+
+https://cameronrwolfe.substack.com/p/easily-train-a-specialized-llm-peft
+
+https://docs.adapterhub.ml/methods.html
+
+
+https://graphcore-research.github.io/galore/
+https://medium.com/@tanalpha-aditya/galore-memory-efficient-llm-training-by-gradient-low-rank-projection-d93390e110fe
+
+
+----
+
+# Others (pending processing)
+
+https://nuvalence.io/insights/a-6-category-taxonomy-for-generative-ai-use-cases/
+
+https://towardsai.net/p/artificial-intelligence/generative-ai-terminology-an-evolving-taxonomy-to-get-you-started
+
+
+
+
+
+
+
+https://arxiv.org/abs/2402.01680
+https://arxiv.org/abs/2304.03442
+
+https://arxiv.org/abs/2305.16291
