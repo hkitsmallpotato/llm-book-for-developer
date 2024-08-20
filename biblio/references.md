@@ -277,25 +277,23 @@ Finally, we look at some hands on tutorial to work with these production engine.
 
 ## Core features
 
-https://insujang.github.io/2024-01-07/llm-inference-continuous-batching-and-pagedattention/
-
-
-https://insujang.github.io/2024-01-07/llm-inference-autoregressive-generation-and-attention-kv-cache/
-
-https://insujang.github.io/2024-01-11/tensor-parallelism-and-sequence-parallelism-detailed-analysis/
-
-https://insujang.github.io/2024-01-21/flash-attention/
+"Better Tomorrow with Computer Science", blog website by Insu Jang. Article series on production grade LLM inference engine:
+- **LLM Inference: Continuous Batching and PagedAttention** https://insujang.github.io/2024-01-07/llm-inference-continuous-batching-and-pagedattention/
+- **LLM Inference: Autoregressive Generation and Attention KV Cache** https://insujang.github.io/2024-01-07/llm-inference-autoregressive-generation-and-attention-kv-cache/
+- **Tensor Parallelism and Sequence Parallelism: Detailed Analysis** https://insujang.github.io/2024-01-11/tensor-parallelism-and-sequence-parallelism-detailed-analysis/
+- **Flash Attention** https://insujang.github.io/2024-01-21/flash-attention/
 
 
 https://medium.com/@plienhar/llm-inference-series-3-kv-caching-unveiled-048152e461c8
+
 
 ## Extended features
 
 https://medium.com/ai-science/speculative-decoding-make-llm-inference-faster-c004501af120
 
-https://predibase.com/blog/lorax-the-open-source-framework-for-serving-100s-of-fine-tuned-llms-in
-
-https://predibase.com/blog/lora-exchange-lorax-serve-100s-of-fine-tuned-llms-for-the-cost-of-one
+Predibase blog articles:
+- **LoRA Exchange (LoRAX): Serve 100s of Fine-Tuned LLMs for the Cost of 1** https://predibase.com/blog/lora-exchange-lorax-serve-100s-of-fine-tuned-llms-for-the-cost-of-one
+- **LoRAX: The Open Source Framework for Serving 100s of Fine-Tuned LLMs in Production** https://predibase.com/blog/lorax-the-open-source-framework-for-serving-100s-of-fine-tuned-llms-in
 
 ## Hands on
 
