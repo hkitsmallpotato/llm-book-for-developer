@@ -113,29 +113,28 @@ Formalizing Prompts, by Sander Schulhoff. https://learnprompting.org/docs/basics
 
 
 
+## Guide to run open source LLM
+
+Running Open Large Language Models Locally, by TheGabmeister. https://thegabmeister.com/blog/run-open-llm-local/
+
+All LLM Directory, by @johnrushx. https://llmmodels.org/
+
+LLM Explorer. https://llm.extractum.io/
+
+The Llama Hitchiking Guide to Local LLMs, Omar Sanseviero. https://osanseviero.github.io/hackerllama/blog/posts/hitchhiker_guide/
+
+Local LLM Glossary" & "Simple Llama + SillyTavern Setup Guide, by kindacognizant. https://www.redditmedia.com/r/LocalLLaMA/comments/1atghbb/local_llm_glossary_simple_llama_sillytavern_setup/
+
+On the Origin of LLMs: An Evolutionary Tree and Graph for 15,821 Large Language Models, by Sarah Gao, Andrew Kean Gao. https://arxiv.org/abs/2307.09793
 
 
+## Intro to LLM based GenAI app
 
-https://a16z.com/emerging-architectures-for-llm-applications/
+Emerging Architectures for LLM Applications, by Matt Bornstein and Rajko Radovanovic. https://a16z.com/emerging-architectures-for-llm-applications/
 
-https://arxiv.org/abs/2307.09793
+Mapping the landscape of gen-AI product user experience, by Matt Webb. https://interconnected.org/home/2024/07/19/ai-landscape
 
-https://llmmodels.org/
-
-https://llm.extractum.io/
-
-
-
-
-
-
-https://osanseviero.github.io/hackerllama/blog/posts/hitchhiker_guide/
-
-https://www.redditmedia.com/r/LocalLLaMA/comments/1atghbb/local_llm_glossary_simple_llama_sillytavern_setup/
-
-https://interconnected.org/home/2024/07/19/ai-landscape
-
-
+## Structured output/Guided/Constrained Generation
 
 https://hackernoon.com/efficient-guided-generation-for-large-language-models-llm-sampling-and-guided-generation
 https://arxiv.org/abs/2307.09702
@@ -147,6 +146,7 @@ https://github.com/sgl-project/sglang
 https://uptodata.substack.com/p/guided-generation-for-llm-outputs
 
 
+## OpenAI API Standard - Function Calling and Code Interpreter
 
 https://thenewstack.io/a-comprehensive-guide-to-function-calling-in-llms/
 
@@ -170,7 +170,7 @@ https://towardsai.net/p/artificial-intelligence/generative-ai-terminology-an-evo
 
 # Second round
 
-https://thegabmeister.com/blog/run-open-llm-local/
+
 
 https://vercel.com/guides/openai-function-calling
 
