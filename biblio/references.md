@@ -267,56 +267,89 @@ https://wandb.ai/vincenttu/blog_posts/reports/Exploring-2-Multi-Agent-LLM-Librar
 
 # Ch 8 Production Inference Engine
 
+When deploying LLM based GenAI app to production, we'd need a production grade inference engine. This has different consideration and engineering principles compared to ones intended for consumers in Ch 4 above. Namely, a production grade engine is designed for large concurrency inference, have specific performance metric to meet, and generally optimize for the hardware/performance ratio as the deployment scales up; while consumer engine generally only need to consider single user performance and is focused on reducing the hardware requirement. This leads to different engineering techniques.
+
+In the first section, we focus on some core techniques that distinguishes a production grade engine - Continuous batching, Paged Attention, KV-cache, and parallelism. (To be fair, consumer engine does also have some of these features) We also look at analysing the transformer architecture to derive formulas to predict inference engine performance.
+
+In the second section, we probe deeper into some extended features, such as speculative decoding, and LoRaX to serve multiple loras, which can be seen as limited forms of model variations, at scale efficiently.
+
+Finally, we look at some hands on tutorial to work with these production engine.
+
+## Core features
 
 https://insujang.github.io/2024-01-07/llm-inference-continuous-batching-and-pagedattention/
 
 
 https://insujang.github.io/2024-01-07/llm-inference-autoregressive-generation-and-attention-kv-cache/
+
 https://insujang.github.io/2024-01-11/tensor-parallelism-and-sequence-parallelism-detailed-analysis/
+
 https://insujang.github.io/2024-01-21/flash-attention/
 
 
 https://medium.com/@plienhar/llm-inference-series-3-kv-caching-unveiled-048152e461c8
 
+## Extended features
 
 https://medium.com/ai-science/speculative-decoding-make-llm-inference-faster-c004501af120
 
 https://predibase.com/blog/lorax-the-open-source-framework-for-serving-100s-of-fine-tuned-llms-in
+
 https://predibase.com/blog/lora-exchange-lorax-serve-100s-of-fine-tuned-llms-for-the-cost-of-one
 
+## Hands on
 
 https://docs.ray.io/en/latest/serve/tutorials/vllm-example.html
+
 http://kubeagi.k8s.com.cn/docs/Configuration/DistributedInference/deploy-using-rary-serve/
 
 
 
 # Ch 9 LLM Security
 
+The special nature of LLM bring with it a new class of security vulnerability. Some parallel can be made with well known, existing class of exploits, such as prompt injection vs cross site scripting (XSS)/SQL injection attack. Unfortunately, while XSS is generally a well solved problem, at current state, it is difficult to devise a bullet proof defense for prompt injection.
+
+In the attack section we see some elaboration of these methods of attack, and see how the proliferation of LLM app may bring an unintended consequences of opening up new, creative ways to extend the basic attack method into something that's harder to defend against, and have more severe consequences.
+
+In the defense section, we look at some LLM side models and software libraries to implement defensive measures, in a hands on manner.
+
+## LLM attack vector and class of vulnerability
 
 https://kai-greshake.de/posts/llm-malware/
 
 https://kai-greshake.de/posts/in-escalating-order-of-stupidity/
 
+## LLM security defence
 
 https://medium.com/emalpha/safeguarding-llm-conversations-using-llama-guard-a1652da1d2de
 
 https://blog.langchain.dev/rebuff/
+
 https://www.guardrailsai.com/docs/concepts/guard
 
 
 # Ch 10 Fine-tuning LLM
 
+As we saw in Ch 2, LLM can be fine-tuned to adapt it for specific task, or to change its behavior. For industry application with specific requirements, fine-tuning can be a way to create a tailored model that performs better on the task. (However careful consideration and evaluation is necessary - it is not enough to just fire and forget)
+
+The references below first go through some general theory of how training is done by the frameworks, the optimizations involved to speed up training, and explain the configuration parameters and hyperparameters. Then, we look at LoRa, which is a more light-weight (but somewhat limited) alternative to a full fine-tuning.
+
+## General theory
 
 https://sumanthrh.com/post/distributed-and-efficient-finetuning/
 
 https://kaitchup.substack.com/p/a-guide-on-hyperparameters-and-training
 
+## Loras
+
 https://cameronrwolfe.substack.com/p/easily-train-a-specialized-llm-peft
 
 https://docs.adapterhub.ml/methods.html
 
+## Bonus topics
 
 https://graphcore-research.github.io/galore/
+
 https://medium.com/@tanalpha-aditya/galore-memory-efficient-llm-training-by-gradient-low-rank-projection-d93390e110fe
 
 
