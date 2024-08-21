@@ -171,7 +171,7 @@ On the Origin of LLMs: An Evolutionary Tree and Graph for 15,821 Large Language 
 
 # Ch 5 Intro to LLM based GenAI app
 
-LLM based GenAI app is an emerging tech that is in its early day. We begin by reviewing some recent proposed architecture and classification scheme of these new class of app. Overall, while general principles of UI/UX design and software engineering still applies, these apps have their own consideration and characeristics too based on the current capability, limitations, and "quirks" of current generation LLM.
+LLM based GenAI app is an emerging tech that is in its early day. We begin by reviewing some recent proposed architecture and classification scheme of these new class of app. Overall, while general principles of UI/UX design and software engineering still applies, these apps have their own consideration and characeristics too based on the current capability, limitations, and "quirks" of current generation LLM. On the framework side, we see that this is still fairly immature and evolving - all the classical issues and traps of designing a good framework with an emerging technology, and history is repeating, not to mention that LLM's situation is arguably even more complex than what software have dealt with in the last generation; the good news is that this problem is being noticed and experienced software engineers are chipping in.
 
 A first hurdle that we immediately encounter is that to enable tool use (see prompt engineering chapter), we need LLM to reliably produce structured output that strictly adhere to some formal format. (Sidenote: one insightful comment said that this can be considered a glue between the language layer and logic/control layer of the app) This is a significant issue, and numerous attempts have been made to solve this. It is only in very recent time that OpenAI finally supports structured output in their official API, and before that it comes down to a mismash of prompt engineering, asking it to retry/correct/repair, interleaved prompting, abusing OpenAI API's function calling feature, and early attempt at an algorithmic solution to gaurantee technical adherence to the format. The situation is messy and complex, and comes down to some factors: 1. Although algorithmic solutions to it are already known fairly early on, they requires tight integration with the LLM, which OpenAI's API didn't have back then (it does have logit bias, but is sufficiently limited that it won't work for this purpose). On the other hand, locally run LLM can support this, so this created a sort of divergence when the trend is to want to treat OpenAI's API as similar to the servlet/WSGI standard sitting right in the middle layer of the tech stack. Moreover, as there is also non-algorithmic approach that can work, this further created fragmentation in the ecosystem of libraries that aim to support this. 2. The incidental complexity of point 1 created a side effect that the more technical problem of further refining the core algorithm to be more efficient, and to handle real world complexity, such as specifically supporting JSONSchema efficiently alongside context free grammar (which is considered general enough to serve as the common base case), are harder to attend to. 3. Other technical difficulties that are simply epheramal and only due to an immature ecosystem overall. Nevertheless they might have been enough to slow adoption, which creates a negative feedback effect.
 
@@ -187,6 +187,8 @@ Emerging Architectures for LLM Applications, by Matt Bornstein and Rajko Radovan
 
 Mapping the landscape of gen-AI product user experience, by Matt Webb. https://interconnected.org/home/2024/07/19/ai-landscape
 
+Fuck You, Show Me The Prompt, by Hamel Husain. https://hamel.dev/blog/posts/prompt/
+
 ## Structured output/Guided/Constrained Generation
 
 **General theory and practise**
@@ -199,6 +201,8 @@ https://simmering.dev/blog/structured_output/
 https://github.com/sgl-project/sglang
 
 https://uptodata.substack.com/p/guided-generation-for-llm-outputs
+
+https://www.boundaryml.com/blog/structured-output-from-llms (I personally disagree with some point in the article though)
 
 
 **Optimization**
