@@ -236,9 +236,52 @@ https://dev.to/tereza_tizkova/llama-3-with-function-calling-and-code-interpreter
 # Ch 6 Retrieval Augmented Generation (RAG)
 
 > TODO: RAG articles are a dime a dozen given how it's seen as being the best match with enterprise use case. Because of this it is a challenge to filter and select articles from such a vast pool.
+> Update: Below is a rough first pass, and by no mean is intended to be final...
 
-https://alexgarcia.xyz/blog/2024/sqlite-vec-stable-release/index.html
 
+
+## General Guide/Intro
+
+A Simple Guide To Retrieval Augmented Generation Language Models, by Joas Pambou. https://www.smashingmagazine.com/2024/01/guide-retrieval-augmented-generation-language-models/
+
+LlamaIndex: An imperative for building context-aware LLM-based apps, Akash Takyar. https://www.leewayhertz.com/llamaindex/
+
+
+## Vector Databases, embeddings, hybrid search
+
+Vector Databases: Understanding the Algorithm (part 3), by David Gutsch. https://medium.com/@david.gutsch0/vector-databases-understanding-the-algorithm-part-3-bc7a8926f27c
+
+Introducing sqlite-vec v0.1.0: a vector search SQLite extension that runs everywhere, by Alex Garcia. https://alexgarcia.xyz/blog/2024/sqlite-vec-stable-release/index.html
+
+How to use SQLite to store and query vector embeddings, by Stephen Collins. (uses https://github.com/asg017/sqlite-vss) https://dev.to/stephenc222/how-to-use-sqlite-to-store-and-query-vector-embeddings-2b4o
+
+Dense vector + Sparse vector + Full text search + Tensor reranker = Best retrieval for RAG? by Yingfeng Zhang. https://infiniflow.org/blog/best-hybrid-search-solution
+
+
+## Libraries
+
+RAGFlow is an open-source RAG (Retrieval-Augmented Generation) engine based on deep document understanding. https://github.com/infiniflow/ragflow
+
+Get Started, Local LLM RAG, R2R (RAG to Riches) Documentation. https://r2r-docs.sciphi.ai/cookbooks/local-rag
+
+
+## Advanced RAG
+
+A Cheat Sheet and Some Recipes For Building Advanced RAG, by Andrei, LlamaIndex Blog https://medium.com/llamaindex-blog/a-cheat-sheet-and-some-recipes-for-building-advanced-rag-803a9d94c41b
+
+Advanced RAG 01: Small-to-Big Retrieval - Child-Parent RecursiveRetriever and Sentence Window Retrieval with LlamaIndex, by Sophia Yang. https://towardsdatascience.com/advanced-rag-01-small-to-big-retrieval-172181b396d4
+
+Advanced Retrieval-Augmented Generation (RAG) through practical notebooks, using the power of the Langchain, OpenAI GPTs ,META LLAMA3 ,Agents. https://github.com/NisaarAgharia/Advanced_RAG
+
+Evolution of RAG-based Systems: Naive RAG, Advanced RAG & Modular RAG, by Dr Julija. https://drjulija.github.io/posts/rag/
+
+
+## Misc.
+
+https://www.llamaindex.ai/blog/introducing-query-pipelines-025dc2bb0537
+Introducing Query Pipelines, by Jerry Liu
+
+https://www.reddit.com/r/LocalLLaMA/comments/1e033xj/what_is_your_rag_setup/
 
 
 # Ch 7 LLM based Agents
