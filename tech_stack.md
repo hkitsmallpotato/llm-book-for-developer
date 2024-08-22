@@ -55,5 +55,27 @@ https://dev.to/john_dunn_ec1dda9d69d5743/getting-started-with-tanstack-query-5b5
 
 (Also a new one recently?)
 
+### Agent
+
+**Candidates**: autogen, crewAI, langgraph, langroid...
+
 ### Productionizing
+
+**Web Integration**
+
+- langserve (Autogenerate a suite of endpoints with playground)
+- burr https://github.com/dagworks-inc/burr
+ - Not directly about this (it is mainly about managing state machine for a DAG flow with supports for persistence etc), but may turn out to be surprisingly suitable esp. for state heavy, interactive LLM GenAI App such as Chat.
+
+**Prompt Management**
+
+?
+
+**Monitoring/Tracing**
+
+- langfuse
+
+**Misc**
+
+- litellm
 
