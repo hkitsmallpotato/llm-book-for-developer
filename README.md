@@ -21,4 +21,4 @@ So here's an honest attempt. May have some technical mistakes, doesn't matter - 
 
 Currently only a very early draft.
 
-Look around the repo, specifically, check out the `biblio/references.md` doc.
+Look around the repo, specifically, check out the `biblio/references.md` doc in Bibliography section - there is a long list of links there.
