@@ -172,3 +172,4 @@ With this method we can access it in the same python interpreter process. This i
 
 First install the `llama-cpp-python` library. This is dependent on whether you use GPU or not, and may requires complicated compilation. You can opt for downloading pre-compiled wheel on the github release page instead.
 
+Then, you may simply follow the doc at https://llama-cpp-python.readthedocs.io/en/latest/ for high level overview of basic usage.
