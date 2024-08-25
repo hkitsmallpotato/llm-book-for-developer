@@ -2,7 +2,11 @@
 
 In this end to end tutorial, we will try to recreate a (relatively) full featured assistant chatbot that are equipped with web search and the code interpreter feature.
 
+> Reference: https://github.com/lemonteaa/llm-chatbot-tuto (WIP, this version written against https://github.com/lemonteaa/llm-chatbot-tuto/tree/v0.0.1-alpha)
+
 ## Design and project setup
+
+> TODO: write about the overall design
 
 Our project will have these dependencies:
 
@@ -353,5 +357,200 @@ Finally, to send a command to a running container, use `self.container.exec_run(
 
 **ReACT Prompt for code interpreter and execution loop**:
 
-> TODO
+Let's design the prompt for code interpreter.
 
+`core/code_interpreter.py`:
+
+> Note: the formating may be different from actual source code due to markdown formatting issue with escaping backtick.
+
+```py
+import outlines
+from llama_cpp import LlamaGrammar
+
+from infra.llm_provider import llm
+
+from infra.docker_container_session import *
+
+q = "Please generate a plot of the price of SP500 in the last week with hourly data, and save it to a file named sp500-plot.png."
+
+react_grammar = """
+thought-format ::= ( "Thought " iter ": " thought "\n" )
+thought ::= [^\n]+
+action-format ::= ( "Action " iter ": " action-type-branch "--")
+action-type-branch ::= ( write-file-action | command-action | exit-action )
+
+command-action ::= ( "Terminal command\n" "> " terminal-command "\n")
+terminal-command ::= [^\n]+
+
+exit-action ::= "Exit\n"
+
+write-file-action ::= ( "Write files\n" (write-individual-file)+ "Finish.\n" )
+write-individual-file ::= ( "File name: `" file-name-pattern "`\n" "File content:\n\`\`\`\n" file-content "\`\`\`\n" )
+file-name-pattern ::= ("./" [^`]+)
+file-content ::= [^`]*
+
+root ::= (thought-format action-format)
+"""
+
+@outlines.prompt
+def code_interpreter_prompt(request, homedir, history):
+    """
+BEGIN_INSTRUCTION
+This is code interpreter. You, as an AI assistant, can design and execute python program on behalf of the user to accomplish various goals.
+Setup:
+- The python program will be executed in a sandboxed enviornment with python3.10 and pip3 already installed.
+- Terminal access is also given, sudo apt-get is allowed. OS is ubuntu 20.
+- Public internet access is allowed.
+- Access to the user's home folder at `{{ homedir }}` (including creating subfolders etc) is allowed.
+- In your program, anything printed to stdout will be shown to you, but no stdin access is given directly.
+- Terminal output will also be printed to you.
+- Access to the sandbox/code interpreter is interactive - you can perform one action at each step, and use the result/feedback to iterate and refine until you achieve your goal.
+
+Instruction:
+You should engage in a thought loop, explaining what you would do based on the current state of the code interpreter/results of previous actions. You will also pay attention to any technical details.
+In that loop, you should repeat thought-action-observation:
+- Thought is your internal monologue to decide on what to do next based on all available informations.
+- Action is where you execute an action. Three types of actions are possible with their own format requirements:
+  - "Write files" is where you will create new files by entering the text.
+  - "Terminal command" is where you will execute a terminal command.
+  - "Exit" is when you are done and want to leave code interpreter. (See below)
+- Observation is where the system will return the result of your terminal command.
+
+When you're accomplished your goal, choose the action type: "Exit".
+You will then be exfiltrated by the system into another section where you are free to write the final answer, with access to your whole transcript.
+
+Example format for reference:
+
+Thought 1: I should install system dependencies.
+Action 1: Terminal command
+> sudo apt-get update && sudo apt install htop -y
+--
+Observation 1:
+<transcript of terminal output>
+
+Thought 2: I should now create the python program.
+Action 2: Write files
+File name: `./main.py`
+File content:
+\`\`\`
+import json
+print("Hello")
+\`\`\`
+File name: `./requirements.txt`
+File content:
+\`\`\`
+json
+\`\`\`
+Finish.
+--
+Observation 2: Success.
+
+Thought 3: Let's run the python program.
+Action 3: Terminal command
+> pip install -r requirements.txt && python main.py
+--
+Observation 3:
+<transcript of terminal output>
+...
+Hello
+
+Thought 4: We've successfully printed "Hello" to our screen.
+Action 4: Exit
+--
+
+(Above is just a sample, feel free to be more elaborate in your internal monologue.)
+END_INSTRUCTION
+
+User query:
+{{ request }}
+
+Assistant:
+{% for h in history %}
+{{ h }}
+{% endfor %}
+    """
+```
+
+That's a lot even for just plain prompt engineering!
+
+- `react_grammar` is a manually written Grammar spec for `llama-cpp-python` that enforce the ReACT thinking and acting loop.
+- In the main prompt, we give the context/background, then specify instruction explaining the ReACT pattern requirement, and then give an example. Finally we inject the interaction history of the running code interpreter session.
+
+
+And then the execution loop:
+
+```py
+def code_interpreter_loop(request, session_name):
+    conf = DockerContainerConfig()
+    try:
+        codeInterpreter = DockerCodeInterpreterSession("../code-int-storages")
+        history = []
+        done = False
+        codeInterpreter.start_session(session_name, conf)
+        while not done:
+            prompt = code_interpreter_prompt(request, conf.bind_dir, history)
+            response = llm(prompt=prompt, stop=["--"], grammar=LlamaGrammar.from_string(react_grammar))
+            parsed_response = parse_response(response["choices"][0]["text"])
+            if parsed_response["action_type"] == "Exit":
+                done = True
+                print("Code interpreter DONE!")
+            elif parsed_response["action_type"] == "Terminal Command":
+                commandOutput = codeInterpreter.run_single_command(parsed_response["command"], work_dir=conf.bind_dir)
+                parsed_response["observation"] = commandOutput
+            elif parsed_response["action_type"] == "Write files":
+                pass # TODO
+            else:
+                raise ValueError()
+            history.append(parsed_response)
+    except BaseException as e:
+        print(e)
+    finally:
+        codeInterpreter.stop_session()
+```
+
+Here, `history` is about the commands previously executed by code interpreter and its subsequent terminal output. We use it to format the `prompt`, and then generate LLM response, stopping at `--` to detect the action step of the ReACT loop. After parsing response, we run the command, gather the output, and then append to `history`. This is repeated until LLM decides it is done.
+
+**Wire up the function call**:
+
+Finally, some ceremony:
+
+`core/function_call.py`:
+
+```py
+from infra.llm_provider import llm
+
+# Functions for LLM to use
+
+# TODO: need to return dict with further instructions
+
+def code_interpreter(request: str) -> str:
+    """Initiate a code interpreter session to solve problem, or do things on the 
+    user's behave, via running python program designed by an AI.
+
+    request: A fully self contained text instruction on what the AI should
+      accomplish within the code interpreter session. Example: "Generate a plot of
+      the price of SP500 in the last week, and save it to the file sp_500_price.png."
+    
+    Return: Text remarks from the code interpreter AI.
+    """
+    run_code_interpreter(request)
+
+def run_code_interpreter(r):
+    print("run_code_interpreter") # TODO: implement code interpreter
+    print(r)
+
+function_registry = {
+    #"web_search_synthesis": web_search_synthesis,
+    "code_interpreter": code_interpreter
+}
+```
+
+Our general pattern here is that `code_interpreter` is the function with almost empty code body but with full Doc-strings in natural language, so this is the one that will be auto-extracted by `outlines` to inject into the main prompt when listing available functions.
+
+Then `run_code_interpreter` would be responsible for actually executing things.
+
+Finally we also add a `function_registry` dict for dynamically calling functions.
+
+## Web Search and RAG
+
+> TODO
