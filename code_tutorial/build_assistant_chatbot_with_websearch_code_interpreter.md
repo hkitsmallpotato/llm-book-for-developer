@@ -553,4 +553,195 @@ Finally we also add a `function_registry` dict for dynamically calling functions
 
 ## Web Search and RAG
 
-> TODO
+Another main feature of an assistant chatbot is to search the web and generate answer based on that. It is a specific example of RAG (Retrieval Augmented Generation). We will have tutorial to cover RAG more later on, but now let's just cook something up quickly with `llama-index`.
+
+At its core, RAG consist of:
+1. Data abstraction for Documents and Nodes (section of a document)
+2. A data ingestion pipeline
+3. A vector database with embedding and storage mechanism
+4. A query pipeline
+
+We will skip 4 (as we build our custom pipeline), leverage `llama-index` convinience in 2, and try to setup 3 correctly (which can be tricky due to quirks of the library).
+
+But first let's review 1. Ultimately, they can be considered as object as container for the text data, but with auto links to related nodes. They also accept setting user defined metadata.
+
+**RAG Setup**:
+
+`infra/web_search_rag.py`:
+
+```py
+# Sample RAG chatbot
+
+from transformers import AutoTokenizer
+
+import json
+import re
+
+from duckduckgo_search import DDGS
+
+from llama_index.readers.web import SimpleWebPageReader
+
+import chromadb
+from llama_index.core import VectorStoreIndex
+from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.core import StorageContext
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+
+from llama_index.core.node_parser import TokenTextSplitter
+
+def extract_action(text):
+    cap_grp = re.search("```(json|js|javascript)?([\s\S]*)```", text).group(2)
+    return json.loads(cap_grp)
+
+def web_search(q):
+    results = DDGS().text(q + " filetype:html", max_results=10)
+    return results
+
+
+#def gen_docs(search_results):
+#    docs = SimpleWebPageReader(html_to_text=True).load_data([result['href'] for result in search_results])
+#    for result, doc in zip(search_results, docs):
+#        doc.metadata = { 'title': result['title'], 'href': result['href'] }
+#    return docs
+
+def gen_docs(search_results):
+    #docs = SimpleWebPageReader(html_to_text=True).load_data([result['href'] for result in search_results])
+    docs = []
+    for result in search_results:
+        try:
+            doc = SimpleWebPageReader(html_to_text=True).load_data([ result['href'] ])[0]
+            doc.metadata = { 'title': result['title'], 'href': result['href'] }
+            docs.append(doc)
+        except BaseException as e:
+            print(e)
+    return docs
+
+def query_crawl(docs, query, top_k, embed_model, chroma_client):
+    chroma_collection = chroma_client.create_collection("temp")
+    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    index = VectorStoreIndex.from_documents(docs, storage_context=storage_context, embed_model=embed_model)
+    retriever = index.as_retriever(similarity_top_k=top_k)
+    nodes = retriever.retrieve(query)
+    return nodes
+```
+
+The web search is easy: just do `DDGS().text(q + " filetype:html", max_results=10)`. Note the restriction to HTML file type as the simple web reader we use from `llama-index` cannot handle media type.
+
+`gen_docs` uses the `SimpleWebPageReader` in `llama-index` to read and parse the webpage URL into markdown text. We also perform data mapping, especially of metadata, from `DDGS` into the `llama-index` Documents.
+
+`query_crawl` is the main integration point where we tie everything together. `chroma` is used as the vector database. What is particularly tricky here is that `llama-index` defaults to using OpenAI GPT and have many other deep-seated defaults that are not easy to change if your use case is significantly different from what it assumes. This code is settled on only after some trial and error. The central object here is `VectorStoreIndex`, but we have to override the default settings right at object construction time. `StorageContext` is set to use the `ChromaVectorStore`, which is fed to the main index to override the default. In a similar vein, we will later on feed in the embed model to use otherwise it may call OpenAI instead.
+
+(?) Notice that document splitting into nodes is done automatically by `VectorStoreIndex`.
+
+The latter code:
+
+```py
+    retriever = index.as_retriever(similarity_top_k=top_k)
+    nodes = retriever.retrieve(query)
+```
+
+Is standard.
+
+**Wiring up with Function Calling**:
+
+> Note: again, triple backtick escaping, so may be different from actual source code
+
+First, setup a new prompt for our custom query pipeline:
+
+`core/prompt_templates.py`:
+
+```py
+@outlines.prompt
+def grounded_generation_prompt(mynodes, search_query, topic_question):
+    """
+BEGININPUT
+{% for node in mynodes %}
+BEGINCONTEXT
+id: {{ loop.index }}
+title: {{ node.metadata["title"] }}
+ENDCONTEXT
+{{ node.text }}
+{% endfor %}
+ENDINPUT
+BEGININSTRUCTION
+<system>Answer user query based on provided information above. In your answer, cite the sources *inline* using a special tag. Example:
+\`\`\`
+It is known that current progress in AI is <cite:3>expected to accelerates by some experts</cite>, although other disagree.
+\`\`\`
+Where the number inside the tag is the source id. </system>
+Topic question: {{ topic_question }}
+(If topic question is empty, infer what the user want to ask based on the search query below and answer that instead:
+Search query: {{ search_query }})
+ENDINSTRUCTION
+    """
+```
+
+This uses the retrieved nodes from our RAG module, and then ask the LLM to generate a *grounded response* with citations.
+
+`core/function_call.py`:
+
+```py
+from infra.web_search_rag import *
+#from chatbot import grounded_gen
+from core.prompt_templates import grounded_generation_prompt
+from infra.llm_provider import llm
+
+def grounded_gen(nodes, a, b):
+    prompt1 = grounded_generation_prompt(nodes, a, b)
+    print(prompt1)
+    ai_ans = llm(prompt = prompt1, max_tokens=800, stream=True)
+    response = ""
+    for t in ai_ans:
+        u = t["choices"][0]["text"]
+        response = response + u
+        print(u, end='', flush=True)
+    return {"nodes": nodes, "answer": response, "further_instruct": """Below is a grounded generation by AI that cites source from the web. \
+You may now write the final answer to the user incorporating the suggested answer, while also adding your own thoughts as you deem fit. \
+Be sure to respect any facts cited and do not override those. *Important*: Please copy the inline citation tags verbatim if you reuse those texts."""}
+```
+
+Here we add a function that can execute our custom query pipeline.
+
+Finally, we wire up the function calling in the main system:
+
+```py
+def web_search_synthesis(search_query: str, topic_question: str) -> str:
+    """Synthesize an answer, with inline citations, through searching the web 
+    and then passing it through a RAG (Retrieval Augmented Generation) pipeline 
+    with a LLM AI.
+
+    The topic_question will be used to select the most relevant text snippets
+    in the web search results to feed to the LLM. That LLM will generate an answer
+    to the topic_question using the info from the text snippets.
+
+    search_query: Query for the web search engine.
+    topic_question: Question to generate answer on.
+
+    Return: Text answer with inline citations.
+    """
+    do_web_search_synthesis(search_query, topic_question)
+
+def do_web_search_synthesis(a, b):
+    print("do_web_search_synthesis")
+    print(a, b)
+    web_search_results = web_search(a)
+    print(web_search_results)
+    mydocs = gen_docs(web_search_results)
+    print(len(mydocs))
+    chroma_client = chromadb.EphemeralClient()
+    try:
+        chroma_client.delete_collection("temp")
+    except BaseException as e:
+        print(e)
+    embed_model = HuggingFaceEmbedding(model_name="intfloat/e5-small-v2", embed_batch_size=200)
+    topic_q = b
+    if b is None or b == "":
+        topic_q = "Give a relevant summary of the search query: " + a
+    mynodes = query_crawl(mydocs, topic_q, 5, embed_model, chroma_client)
+    print(mynodes)
+    #nodes[0].metadata, nodes[0].text
+    return grounded_gen(mynodes, a, b)
+```
+
+Note that we use a locally run huggingface embedding model.
