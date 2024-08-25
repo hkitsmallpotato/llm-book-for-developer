@@ -6,6 +6,7 @@
   - [Local LLM and OpenAI API Basics](code_tutorial/local_LLM_programmatic_and_OpenAI_API_Basics.md)
   - [Building Web UI with Vercel and ChatKitUI](code_tutorial/webui_chat_vercel.md)
   - [ToolAI/Prompt chaining with aiconfig](code_tutorial/ToolAI_aiconfig.md)
+  - [Build an assistant chatbot with Web search and Code Interpreter](code_tutorial/build_assistant_chatbot_with_websearch_code_interpreter.md)
   - [Productionizing LLM app with Burr](code_tutorial/productionizing_with_burr.md)
 - Bibliography
   - [References](biblio/references.md)
